@@ -1,5 +1,6 @@
 from supabase import create_client, Client
 from tqdm import tqdm
+import numpy as np
 
 class DBUpdater:
     def __init__(self, url: str, key: str):
@@ -24,6 +25,7 @@ class DBUpdater:
         return response
 
     def upsert_price(self, symbol: str, df):
+        df = df.replace({np.nan: None})
         stack = []
         for row in df.itertuples():
             stack.append({
