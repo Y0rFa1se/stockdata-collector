@@ -25,7 +25,10 @@ class DBUpdater:
         return response
 
     def upsert_price(self, symbol: str, df):
+        replace_values = ["", "-", "N/A", "null"]
+        df = df.replace(replace_values, np.nan) 
         df = df.replace({np.nan: None})
+        df["Volume"] = df["Volume"].astype(int)
         stack = []
         for row in df.itertuples():
             stack.append({
