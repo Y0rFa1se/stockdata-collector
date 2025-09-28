@@ -27,7 +27,9 @@ class DBUpdater:
     def upsert_price(self, symbol: str, df):
         replace_values = ["", "-", "N/A", "null"]
         df = df.replace(replace_values, np.nan) 
-        df = df.replace({np.nan: None})
+        df["Volume"].fillna(0, inplace=True)
+        df["Volume"] = df["Volume"].astype(int)
+        df = df.replace({np.nan: 0})
         df["Volume"] = df["Volume"].astype(int)
         stack = []
         for row in df.itertuples():
